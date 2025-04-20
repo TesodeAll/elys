@@ -49,10 +49,11 @@ func (k Keeper) ExitPoolEst(
 	fmt.Println("=============START=================")
 	fmt.Println("pool assets in start:", pool.PoolAssets)
 
-	for _, asset := range pool.PoolAssets {
+	for i, asset := range pool.PoolAssets {
 		balance := k.accountedPoolKeeper.GetAccountedBalance(ctx, poolId, asset.Token.Denom)
 		fmt.Println("denom:", asset.Token.Denom)
 		fmt.Println("accounted pool balance:", balance.String())
+		pool.PoolAssets[i].Token.Amount = balance
 	}
 	totalSharesAmount := pool.GetTotalShares()
 	if shareInAmount.GTE(totalSharesAmount.Amount) {
